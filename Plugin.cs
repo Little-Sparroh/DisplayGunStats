@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace MycopunkGunDataDisplay
 {
-    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.0")]
+    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.3")]
     [MycoMod(null, ModFlags.IsClientSide)]
     public class GunDataDisplayMod : BaseUnityPlugin
     {
@@ -25,6 +25,7 @@ namespace MycopunkGunDataDisplay
         private static readonly Color orchid = new Color(0.855f, 0.439f, 0.839f); // #DA70D6
         private static readonly Color rose = new Color(0.8901960784313725f, 0.1411764705882353f, 0.16862745098039217f); // #E3242B
         private static readonly Color macaroon = new Color(0.9764705882352941f, 0.8784313725490196f, 0.4627450980392157f); // #F9E076
+
         private static readonly Color shamrock = new Color(0.011764705882352941f, 0.6745098039215687f, 0.07450980392156863f); // #03AC13
 
         private void Awake()
