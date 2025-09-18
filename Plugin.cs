@@ -21,6 +21,12 @@ namespace MycopunkGunDataDisplay
         private const float UpdateInterval = 0.5f; // Check every 0.5 seconds to avoid performance hit
         private static bool hudEnabled = true;
 
+        private static readonly Color blush = new Color(0.996f, 0.753f, 0.753f); // #FEC0C0
+        private static readonly Color parakeet = new Color(0.102f, 0.639f, 0.427f); // #1AA36D
+        private static readonly Color sky = new Color(0.529f, 0.808f, 0.922f); // #87CEEB
+        private static readonly Color biscotti = new Color(0.886f, 0.776f, 0.506f); // #E2C681
+        private static readonly Color lilac = new Color(0.784f, 0.635f, 0.784f); // #C8A2C8
+
         private void Awake()
         {
             var harmony = new Harmony("com.yourname.displaygunstats");
@@ -78,6 +84,20 @@ namespace MycopunkGunDataDisplay
             currentGun = null; // No active gun found
         }
 
+        private Color GetElementColor(EffectType effect)
+        {
+            return effect switch
+            {
+                EffectType.Normal => Color.white,
+                EffectType.Shock => sky,
+                EffectType.Fire => blush,
+                EffectType.Acid => parakeet,
+                EffectType.Decay => lilac,
+                EffectType.Bees => biscotti,
+                _ => Color.white
+            };
+        }
+
         private void OnGUI()
         {
             if (currentGun == null || !hudEnabled) return;
@@ -88,53 +108,55 @@ namespace MycopunkGunDataDisplay
             {
                 fontSize = 21,
                 normal = { textColor = Color.white },
-                fontStyle = FontStyle.Bold
+                fontStyle = FontStyle.Bold,
+                richText = true
             };
 
-            float width = 450f;
             float height = 30f;
+            float padding = 10f;
 
             // Collect all display lines
             List<string> lines = new List<string>();
             lines.Add("Current Gun Data:");
-            lines.Add($"Damage: {data.damage}");
-            lines.Add($"Element: {data.damageEffect}");
-            lines.Add($"Element On-Hit: {data.damageEffectAmount}");
-            lines.Add($"Fire Rate: {(1f / data.fireInterval).ToString("F2")}");
-            lines.Add($"Magazine Size: {data.magazineSize}");
-            lines.Add($"Ammo Capacity: {data.ammoCapacity}");
-            lines.Add($"Reload Duration: {data.reloadDuration}");
+            lines.Add($"Damage: <color=#{ColorUtility.ToHtmlStringRGB(blush)}>{Mathf.Round(data.damage)}</color>");
+            var elementColor = GetElementColor(data.damageEffect);
+            lines.Add($"Element: <color=#{ColorUtility.ToHtmlStringRGB(elementColor)}>{data.damageEffect}</color>");
+            lines.Add($"Element On-Hit: <color=#{ColorUtility.ToHtmlStringRGB(elementColor)}>{Mathf.Round(data.damageEffectAmount)}</color>");
+            lines.Add($"Fire Rate: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{(1f / data.fireInterval).ToString("F2")}</color>");
+            lines.Add($"Magazine Size: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.magazineSize}</color>");
+            lines.Add($"Ammo Capacity: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.ammoCapacity}</color>");
+            lines.Add($"Reload Duration: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.reloadDuration.ToString("F1")}</color>");
             //lines.Add($"Bullet Speed: {data.bulletSpeed}");
-            lines.Add($"Bullets Per Shot: {data.bulletsPerShot}");
-            lines.Add($"Burst Size: {data.burstSize}");
-            lines.Add($"Burst Fire Interval: {data.burstFireInterval}");
-            lines.Add($"Automatic: {(data.automatic == 1 ? "Yes" : "No")}");
-            lines.Add($"Max Bounces: {data.maxBounces}");
-            lines.Add($"Explosion Size: {data.hitForce}");
+            lines.Add($"Bullets Per Shot: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{data.bulletsPerShot}</color>");
+            lines.Add($"Burst Size: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{data.burstSize}</color>");
+            lines.Add($"Burst Interval: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{data.burstFireInterval.ToString("F2")}</color>");
+            lines.Add($"Automatic: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{(data.automatic == 1 ? "Yes" : "No")}</color>");
+            lines.Add($"Bounces: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{data.maxBounces}</color>");
+            lines.Add($"Explosion Size: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{Mathf.Round(data.hitForce)}</color>");
 
             // RecoilData
             lines.Add("Recoil Data:");
-            lines.Add($"  Recoil X: ({data.recoilData.recoilX.x}, {data.recoilData.recoilX.y})");
-            lines.Add($"  Recoil Y: ({data.recoilData.recoilY.x}, {data.recoilData.recoilY.y})");
+            lines.Add($"  Recoil X: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.recoilData.recoilX.x)}, {Mathf.Round(data.recoilData.recoilX.y)})</color>");
+            lines.Add($"  Recoil Y: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.recoilData.recoilY.x)}, {Mathf.Round(data.recoilData.recoilY.y)})</color>");
             //lines.Add($"  Recoil Z: ({data.recoilData.recoilZ.x}, {data.recoilData.recoilZ.y})");
             //lines.Add($"  Max Recoil Z: {data.recoilData.maxRecoilZ}");
             // Add more recoil fields as needed...
 
             // SpreadData
             lines.Add("Spread Data:");
-            lines.Add($"  Spread Type: {data.spreadData.spreadType}");
-            lines.Add($"  Spread Size: ({data.spreadData.spreadSize.x}, {data.spreadData.spreadSize.y})");
+            lines.Add($"  Spread Type: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{data.spreadData.spreadType}</color>");
+            lines.Add($"  Spread Size: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.spreadData.spreadSize.x)}, {Mathf.Round(data.spreadData.spreadSize.y)})</color>");
             // Concentric sizes if any...
 
             // RangeData
             lines.Add("Range Data:");
-            lines.Add($"  Falloff Start: {data.rangeData.falloffStartDistance}");
-            lines.Add($"  Falloff End: {data.rangeData.falloffEndDistance}");
-            lines.Add($"  Max Damage Range: {data.rangeData.maxDamageRange}");
+            lines.Add($"  Falloff Start: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.falloffStartDistance)}</color>");
+            lines.Add($"  Falloff End: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.falloffEndDistance)}</color>");
+            lines.Add($"  Max Damage Range: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.maxDamageRange)}</color>");
 
             // ChargeData
             lines.Add("Charge Data:");
-            lines.Add($"  Duration: {data.chargeData.duration}");
+            lines.Add($"  Duration: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.chargeData.duration.ToString("F1")}</color>");
             // Add more...
 
             // Fire Constraints
@@ -142,16 +164,24 @@ namespace MycopunkGunDataDisplay
             //lines.Add($"  Can Fire While Sprinting: {data.fireConstraints.canFireWhileSprinting}");
             // Add more...
 
-            // Calculate total height
-            float totalHeight = lines.Count * height;
+            // Calculate max width and total height
+            float maxWidth = 0f;
+            float totalHeight = 0f;
+            foreach (string line in lines)
+            {
+                Vector2 size = style.CalcSize(new GUIContent(line));
+                maxWidth = Mathf.Max(maxWidth, size.x);
+                totalHeight += height;
+            }
+            maxWidth += padding * 2; // Add padding on both sides
 
-            float x = Screen.width - width - 10f;
-            float y = Screen.height - totalHeight - 10f;
+            float x = 10f;
+            float y = 10f;
 
             // Draw semi-transparent black background
             Color originalBackgroundColor = GUI.backgroundColor;
-            GUI.backgroundColor = new Color(0f, 0f, 0f, 1f); // 80% opacity black
-            GUI.Box(new Rect(x - 5f, y - 5f, width + 10f, totalHeight + 10f), GUIContent.none);
+            GUI.backgroundColor = new Color(0f, 0f, 0f, 1f); // Fully opaque black
+            GUI.Box(new Rect(x - padding / 2f, y - padding / 2f, maxWidth + padding, totalHeight + padding), GUIContent.none);
 
             // Reset background color
             GUI.backgroundColor = originalBackgroundColor;
@@ -159,7 +189,7 @@ namespace MycopunkGunDataDisplay
             // Draw labels
             for (int i = 0; i < lines.Count; i++)
             {
-                GUI.Label(new Rect(x, y + i * height, width, height), lines[i], style);
+                GUI.Label(new Rect(x, y + i * height, maxWidth, height), lines[i], style);
             }
         }
 
