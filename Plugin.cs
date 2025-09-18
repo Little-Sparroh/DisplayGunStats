@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace MycopunkGunDataDisplay
 {
-    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.3")]
+    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.0")]
     [MycoMod(null, ModFlags.IsClientSide)]
     public class GunDataDisplayMod : BaseUnityPlugin
     {
@@ -223,3 +223,4 @@ namespace MycopunkGunDataDisplay
         }
     }
 }
+
