@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace MycopunkGunDataDisplay
 {
-    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.4")]
+    [BepInPlugin("com.yourname.displaygunstats", "DisplayGunStats", "1.0.0")]
     [MycoMod(null, ModFlags.IsClientSide)]
     public class GunDataDisplayMod : BaseUnityPlugin
     {
@@ -21,11 +21,11 @@ namespace MycopunkGunDataDisplay
         private const float UpdateInterval = 0.5f; // Check every 0.5 seconds to avoid performance hit
         private static bool hudEnabled = true;
 
-        private static readonly Color blush = new Color(0.996f, 0.753f, 0.753f); // #FEC0C0
-        private static readonly Color parakeet = new Color(0.102f, 0.639f, 0.427f); // #1AA36D
         private static readonly Color sky = new Color(0.529f, 0.808f, 0.922f); // #87CEEB
-        private static readonly Color biscotti = new Color(0.886f, 0.776f, 0.506f); // #E2C681
-        private static readonly Color lilac = new Color(0.784f, 0.635f, 0.784f); // #C8A2C8
+        private static readonly Color orchid = new Color(0.855f, 0.439f, 0.839f); // #DA70D6
+        private static readonly Color rose = new Color(0.8901960784313725f, 0.1411764705882353f, 0.16862745098039217f); // #E3242B
+        private static readonly Color macaroon = new Color(0.9764705882352941f, 0.8784313725490196f, 0.4627450980392157f); // #F9E076
+        private static readonly Color shamrock = new Color(0.011764705882352941f, 0.6745098039215687f, 0.07450980392156863f); // #03AC13
 
         private void Awake()
         {
@@ -90,10 +90,10 @@ namespace MycopunkGunDataDisplay
             {
                 EffectType.Normal => Color.white,
                 EffectType.Shock => sky,
-                EffectType.Fire => blush,
-                EffectType.Acid => parakeet,
-                EffectType.Decay => lilac,
-                EffectType.Bees => biscotti,
+                EffectType.Fire => rose,
+                EffectType.Acid => shamrock,
+                EffectType.Decay => orchid,
+                EffectType.Bees => macaroon,
                 _ => Color.white
             };
         }
@@ -118,41 +118,41 @@ namespace MycopunkGunDataDisplay
             // Collect all display lines
             List<string> lines = new List<string>();
             lines.Add("Current Gun Data:");
-            lines.Add($"Damage: <color=#{ColorUtility.ToHtmlStringRGB(blush)}>{Mathf.Round(data.damage)}</color>");
+            lines.Add($"Damage: <color=#{ColorUtility.ToHtmlStringRGB(rose)}>{Mathf.Round(data.damage)}</color>");
             var elementColor = GetElementColor(data.damageEffect);
             lines.Add($"Element: <color=#{ColorUtility.ToHtmlStringRGB(elementColor)}>{data.damageEffect}</color>");
             lines.Add($"Element On-Hit: <color=#{ColorUtility.ToHtmlStringRGB(elementColor)}>{Mathf.Round(data.damageEffectAmount)}</color>");
-            lines.Add($"Fire Rate: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{(1f / data.fireInterval).ToString("F2")}</color>");
+            lines.Add($"Fire Rate: <color=#{ColorUtility.ToHtmlStringRGB(macaroon)}>{(1f / data.fireInterval).ToString("F2")}</color>");
             lines.Add($"Magazine Size: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.magazineSize}</color>");
             lines.Add($"Ammo Capacity: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.ammoCapacity}</color>");
             lines.Add($"Reload Duration: <color=#{ColorUtility.ToHtmlStringRGB(sky)}>{data.reloadDuration.ToString("F1")}</color>");
             //lines.Add($"Bullet Speed: {data.bulletSpeed}");
-            lines.Add($"Bullets Per Shot: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{data.bulletsPerShot}</color>");
-            lines.Add($"Burst Size: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{data.burstSize}</color>");
-            lines.Add($"Burst Interval: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{data.burstFireInterval.ToString("F2")}</color>");
-            lines.Add($"Automatic: <color=#{ColorUtility.ToHtmlStringRGB(biscotti)}>{(data.automatic == 1 ? "Yes" : "No")}</color>");
-            lines.Add($"Bounces: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{data.maxBounces}</color>");
-            lines.Add($"Explosion Size: <color=#{ColorUtility.ToHtmlStringRGB(lilac)}>{Mathf.Round(data.hitForce)}</color>");
+            lines.Add($"Bullets Per Shot: <color=#{ColorUtility.ToHtmlStringRGB(orchid)}>{data.bulletsPerShot}</color>");
+            lines.Add($"Burst Size: <color=#{ColorUtility.ToHtmlStringRGB(macaroon)}>{data.burstSize}</color>");
+            lines.Add($"Burst Interval: <color=#{ColorUtility.ToHtmlStringRGB(macaroon)}>{data.burstFireInterval.ToString("F2")}</color>");
+            lines.Add($"Automatic: <color=#{ColorUtility.ToHtmlStringRGB(macaroon)}>{(data.automatic == 1 ? "Yes" : "No")}</color>");
+            lines.Add($"Bounces: <color=#{ColorUtility.ToHtmlStringRGB(orchid)}>{data.maxBounces}</color>");
+            lines.Add($"Explosion Size: <color=#{ColorUtility.ToHtmlStringRGB(orchid)}>{Mathf.Round(data.hitForce)}</color>");
 
             // RecoilData
             lines.Add("Recoil Data:");
-            lines.Add($"  Recoil X: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.recoilData.recoilX.x)}, {Mathf.Round(data.recoilData.recoilX.y)})</color>");
-            lines.Add($"  Recoil Y: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.recoilData.recoilY.x)}, {Mathf.Round(data.recoilData.recoilY.y)})</color>");
+            lines.Add($"  Recoil X: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>({Mathf.Round(data.recoilData.recoilX.x)}, {Mathf.Round(data.recoilData.recoilX.y)})</color>");
+            lines.Add($"  Recoil Y: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>({Mathf.Round(data.recoilData.recoilY.x)}, {Mathf.Round(data.recoilData.recoilY.y)})</color>");
             //lines.Add($"  Recoil Z: ({data.recoilData.recoilZ.x}, {data.recoilData.recoilZ.y})");
             //lines.Add($"  Max Recoil Z: {data.recoilData.maxRecoilZ}");
             // Add more recoil fields as needed...
 
             // SpreadData
             lines.Add("Spread Data:");
-            lines.Add($"  Spread Type: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{data.spreadData.spreadType}</color>");
-            lines.Add($"  Spread Size: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>({Mathf.Round(data.spreadData.spreadSize.x)}, {Mathf.Round(data.spreadData.spreadSize.y)})</color>");
+            lines.Add($"  Spread Type: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>{data.spreadData.spreadType}</color>");
+            lines.Add($"  Spread Size: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>({Mathf.Round(data.spreadData.spreadSize.x)}, {Mathf.Round(data.spreadData.spreadSize.y)})</color>");
             // Concentric sizes if any...
 
             // RangeData
             lines.Add("Range Data:");
-            lines.Add($"  Falloff Start: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.falloffStartDistance)}</color>");
-            lines.Add($"  Falloff End: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.falloffEndDistance)}</color>");
-            lines.Add($"  Max Damage Range: <color=#{ColorUtility.ToHtmlStringRGB(parakeet)}>{Mathf.Round(data.rangeData.maxDamageRange)}</color>");
+            lines.Add($"  Falloff Start: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>{Mathf.Round(data.rangeData.falloffStartDistance)}</color>");
+            lines.Add($"  Falloff End: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>{Mathf.Round(data.rangeData.falloffEndDistance)}</color>");
+            lines.Add($"  Max Damage Range: <color=#{ColorUtility.ToHtmlStringRGB(shamrock)}>{Mathf.Round(data.rangeData.maxDamageRange)}</color>");
 
             // ChargeData
             lines.Add("Charge Data:");
